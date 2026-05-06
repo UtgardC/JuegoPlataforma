@@ -68,7 +68,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::FanZone
   directionReference: {fileID: 0}
   playerAcceleration: 18
-  rigidbodyAcceleration: 12
+  rigidbodyForce: 120
   startsActive: 1
   affectedLayers:
     serializedVersion: 2

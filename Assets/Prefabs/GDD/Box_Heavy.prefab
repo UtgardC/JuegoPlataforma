@@ -15,7 +15,6 @@ GameObject:
   - component: {fileID: 1513323244392092067}
   - component: {fileID: 8228444079835856795}
   - component: {fileID: 8567437848894601250}
-  - component: {fileID: 3036049761107435796}
   - component: {fileID: 5815053259491115645}
   m_Layer: 11
   m_Name: Box_Heavy
@@ -125,7 +124,7 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8941454173694351321}
   serializedVersion: 5
-  m_Mass: 25
+  m_Mass: 200
   m_LinearDamping: 0
   m_AngularDamping: 0.05
   m_CenterOfMass: {x: 0, y: 0, z: 0}
@@ -156,35 +155,36 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b6c5fc22e3d73a943aa3b63d72df136d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MovableObject
-  moveMode: 1
-  weightClass: 2
-  canBeMoved: 1
-  canBeGrabbed: 1
+  canBeGrabbed: 0
   canBePushed: 1
-  playerMoveSpeed: 3.5
-  pushOnlyMinDot: 0.45
-  railDirection: {x: 1, y: 0, z: 0}
-  snapToRailLine: 1
-  physicsMass: 25
+  physicsMass: 200
   pressureWeight: 3
   canBlockLaser: 1
   canBlockWind: 0
   canBeAffectedByWind: 1
-  canBecomeLavaPlatform: 0
+  useRuntimePhysicsMaterial: 1
+  staticFriction: 0.6
+  dynamicFriction: 0.6
+  bounciness: 0
+  frictionCombine: 0
+  bounceCombine: 0
   applyPhysicsMassOnAwake: 1
   freezeTiltRotations: 1
-  useContinuousCollisionWhileGrabbed: 1
-  usePhysicalGrab: 1
-  grabSpring: 1400
-  grabDamper: 120
-  grabSlack: 0.06
-  grabBreakForce: 12000
-  grabProjectionDistance: 0.35
-  collideWithGrabberWhileGrabbed: 1
-  increaseDampingWhileGrabbed: 1
-  grabbedLinearDamping: 2
-  grabbedAngularDamping: 3
-  railSnapStrength: 12
+  continuousCollisionWhilePulled: 1
+  useDefaultPullValues: 1
+  customPullValues:
+    linkMode: 0
+    ropeLength: 0.85
+    spring: 1400
+    damper: 120
+    slack: 0.06
+    breakForce: 12000
+    projectionDistance: 0.35
+    collideWithPuller: 1
+    massScale: 1
+    connectedMassScale: 1
+    linearDamping: 2
+    angularDamping: 3
 --- !u!114 &8567437848894601250
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -199,19 +199,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::WeightedObject
   pressureWeight: 3
   countsWhileDisabled: 0
---- !u!114 &3036049761107435796
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8941454173694351321}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4c47a32d011971a4d864371d1987ffc9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::LaserBlocker
-  canBlockLaser: 1
 --- !u!114 &5815053259491115645
 MonoBehaviour:
   m_ObjectHideFlags: 0

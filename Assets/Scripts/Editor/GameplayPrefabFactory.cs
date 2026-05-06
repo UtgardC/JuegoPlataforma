@@ -41,9 +41,9 @@ public static class GameplayPrefabFactory
         SetupRecommendedLayers();
 
         CreatePlayerPrefab();
-        CreateBoxPrefab("Box_Normal", MoveMode.FreeDrag, WeightClass.Normal, 10f, 1f, true, false);
-        CreateBoxPrefab("Box_Heavy", MoveMode.PushOnly, WeightClass.Heavy, 25f, 3f, true, false);
-        CreateBoxPrefab("Box_Rail", MoveMode.Rail, WeightClass.Normal, 12f, 1f, true, false, true);
+        CreateBoxPrefab("Box_Normal", 10f, 1f, true, true, true);
+        CreateBoxPrefab("Box_Heavy", 200f, 3f, false, true, true);
+        CreateBoxPrefab("Box_Rail", 12f, 1f, true, true, true, true);
         CreatePressureButtonPrefab();
         CreateDoorPrefab();
         CreateMovingPlatformPrefab();
@@ -145,7 +145,7 @@ public static class GameplayPrefabFactory
         SaveAndDestroy(root, $"{PrefabFolder}/Player.prefab");
     }
 
-    private static void CreateBoxPrefab(string name, MoveMode moveMode, WeightClass weightClass, float physicsMass, float pressureWeight, bool blocksLaser, bool lavaPlatform, bool addRailMover = false)
+    private static void CreateBoxPrefab(string name, float physicsMass, float pressureWeight, bool canBeGrabbed, bool canBePushed, bool blocksLaser, bool useRailMovable = false)
     {
         GameObject box = GameObject.CreatePrimitive(PrimitiveType.Cube);
         box.name = name;
@@ -156,24 +156,18 @@ public static class GameplayPrefabFactory
         rb.interpolation = RigidbodyInterpolation.Interpolate;
         rb.constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationZ;
 
-        MovableObject movable = box.AddComponent<MovableObject>();
-        movable.moveMode = moveMode;
-        movable.weightClass = weightClass;
+        MovableObject movable = useRailMovable ? box.AddComponent<RailMovableObject>() : box.AddComponent<MovableObject>();
+        movable.canBeGrabbed = canBeGrabbed;
+        movable.canBePushed = canBePushed;
         movable.physicsMass = physicsMass;
         movable.pressureWeight = pressureWeight;
         movable.canBlockLaser = blocksLaser;
-        movable.canBecomeLavaPlatform = lavaPlatform;
+        movable.useRuntimePhysicsMaterial = true;
 
         WeightedObject weightedObject = box.AddComponent<WeightedObject>();
         weightedObject.pressureWeight = pressureWeight;
 
-        LaserBlocker blocker = box.AddComponent<LaserBlocker>();
-        blocker.canBlockLaser = blocksLaser;
-
         box.AddComponent<ResettableTransform>();
-
-        if (addRailMover)
-            box.AddComponent<RailMover>();
 
         SaveAndDestroy(box, $"{PrefabFolder}/{name}.prefab");
     }

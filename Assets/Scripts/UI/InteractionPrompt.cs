@@ -23,7 +23,7 @@ public class InteractionPrompt : MonoBehaviour
 
     private void Update()
     {
-        bool visible = playerInteraction != null && (playerInteraction.HasAvailableTarget || playerInteraction.IsGrabbing);
+        bool visible = playerInteraction != null && (playerInteraction.HasAvailableTarget || playerInteraction.IsInteracting);
 
         if (canvasGroup != null)
         {
@@ -33,6 +33,6 @@ public class InteractionPrompt : MonoBehaviour
         }
 
         if (promptText != null && playerInteraction != null)
-            promptText.text = playerInteraction.IsGrabbing ? releaseText : grabText;
+            promptText.text = playerInteraction.IsInteracting ? releaseText : grabText;
     }
 }

@@ -11,9 +11,9 @@ TagManager:
   - Player
   - Water
   - UI
-  - WallMask
-  - EdgeMask
-  - GroundMask
+  - 
+  - 
+  - 
   - Ground
   - ParkourGeometry
   - Movable

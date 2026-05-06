@@ -15,7 +15,6 @@ GameObject:
   - component: {fileID: 7208150409634115628}
   - component: {fileID: 3705626973528996171}
   - component: {fileID: 4906231023919346977}
-  - component: {fileID: 7872395704194147756}
   - component: {fileID: 1212665517925003355}
   m_Layer: 11
   m_Name: Box_Normal
@@ -156,35 +155,36 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b6c5fc22e3d73a943aa3b63d72df136d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MovableObject
-  moveMode: 0
-  weightClass: 1
-  canBeMoved: 1
   canBeGrabbed: 1
   canBePushed: 1
-  playerMoveSpeed: 3.5
-  pushOnlyMinDot: 0.45
-  railDirection: {x: 1, y: 0, z: 0}
-  snapToRailLine: 1
   physicsMass: 10
   pressureWeight: 1
   canBlockLaser: 1
   canBlockWind: 0
   canBeAffectedByWind: 1
-  canBecomeLavaPlatform: 0
+  useRuntimePhysicsMaterial: 1
+  staticFriction: 0.6
+  dynamicFriction: 0.6
+  bounciness: 0
+  frictionCombine: 0
+  bounceCombine: 0
   applyPhysicsMassOnAwake: 1
   freezeTiltRotations: 1
-  useContinuousCollisionWhileGrabbed: 1
-  usePhysicalGrab: 1
-  grabSpring: 1400
-  grabDamper: 120
-  grabSlack: 0.06
-  grabBreakForce: 12000
-  grabProjectionDistance: 0.35
-  collideWithGrabberWhileGrabbed: 1
-  increaseDampingWhileGrabbed: 1
-  grabbedLinearDamping: 2
-  grabbedAngularDamping: 3
-  railSnapStrength: 12
+  continuousCollisionWhilePulled: 1
+  useDefaultPullValues: 1
+  customPullValues:
+    linkMode: 0
+    ropeLength: 0.85
+    spring: 1400
+    damper: 120
+    slack: 0.06
+    breakForce: 12000
+    projectionDistance: 0.35
+    collideWithPuller: 1
+    massScale: 1
+    connectedMassScale: 1
+    linearDamping: 2
+    angularDamping: 3
 --- !u!114 &4906231023919346977
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -199,19 +199,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::WeightedObject
   pressureWeight: 1
   countsWhileDisabled: 0
---- !u!114 &7872395704194147756
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4250121946304338724}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4c47a32d011971a4d864371d1987ffc9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::LaserBlocker
-  canBlockLaser: 1
 --- !u!114 &1212665517925003355
 MonoBehaviour:
   m_ObjectHideFlags: 0

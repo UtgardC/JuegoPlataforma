@@ -199,21 +199,56 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerInteraction
   interactionOrigin: {fileID: 0}
+  autoCreateInteractionOrigin: 1
+  autoInteractionOriginLocalPosition: {x: 0, y: 1.05, z: 0.55}
   interactionRange: 1.8
   interactionRadius: 0.6
   movableMask:
     serializedVersion: 2
     m_Bits: 4294967295
-  holdButtonToGrab: 0
-  usePhysicalGrab: 1
-  connectPhysicalGrabToPlayerRigidbody: 1
+  faceTargetOnPull: 1
+  lockFacingWhilePulling: 1
+  snapFacingOnPull: 1
+  facePulledObjectContinuously: 1
+  maxPullDistance: 2.6
+  defaultPullValues:
+    linkMode: 0
+    ropeLength: 0.85
+    spring: 1400
+    damper: 120
+    slack: 0.06
+    breakForce: 12000
+    projectionDistance: 0.35
+    collideWithPuller: 1
+    massScale: 1
+    connectedMassScale: 1
+    linearDamping: 2
+    angularDamping: 3
+  showPullLink: 1
+  pullLineRenderer: {fileID: 0}
+  pullLineWidth: 0.035
+  pullLineColor: {r: 0.95, g: 0.78, b: 0.35, a: 1}
+  pushOrigin: {fileID: 0}
+  pushCooldown: 1
+  pushImpulse: 80
+  pushBoxHalfExtents: {x: 0.65, y: 0.8, z: 0.75}
+  pushBoxForwardOffset: 0.85
+  faceTargetOnPush: 1
+  snapFacingOnPush: 1
   faceTargetWhenAvailable: 0
-  faceTargetOnGrab: 1
-  lockFacingWhileGrabbed: 1
-  faceGrabbedObject: 0
-  snapFacingOnGrab: 1
-  maxGrabDistance: 2.6
   motor: {fileID: 0}
+  onPullStarted:
+    m_PersistentCalls:
+      m_Calls: []
+  onPullEnded:
+    m_PersistentCalls:
+      m_Calls: []
+  onPushStarted:
+    m_PersistentCalls:
+      m_Calls: []
+  onPushEnded:
+    m_PersistentCalls:
+      m_Calls: []
   onGrabStarted:
     m_PersistentCalls:
       m_Calls: []
@@ -269,6 +304,8 @@ MonoBehaviour:
   moveAction: {fileID: 0}
   sprintAction: {fileID: 0}
   jumpAction: {fileID: 0}
+  pushAction: {fileID: 0}
+  pullAction: {fileID: 0}
   interactAction: {fileID: 0}
   resetAction: {fileID: 0}
   motor: {fileID: 0}

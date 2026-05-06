@@ -1,11 +1,13 @@
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class FanZone : MonoBehaviour, IActivatable, IResettable
 {
     [Header("Force")]
     public Transform directionReference;
     public float playerAcceleration = 18f;
-    public float rigidbodyAcceleration = 12f;
+    [FormerlySerializedAs("rigidbodyAcceleration")]
+    public float rigidbodyForce = 120f;
     public bool startsActive = true;
 
     [Header("Filtering")]
@@ -52,7 +54,7 @@ public class FanZone : MonoBehaviour, IActivatable, IResettable
         if (windMultiplier <= 0f)
             return;
 
-        rb.AddForce(forceDirection * (rigidbodyAcceleration * windMultiplier), ForceMode.Acceleration);
+        rb.AddForce(forceDirection * (rigidbodyForce * windMultiplier), ForceMode.Force);
     }
 
     public void Activate()

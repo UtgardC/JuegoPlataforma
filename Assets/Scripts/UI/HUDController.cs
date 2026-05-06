@@ -1,4 +1,5 @@
 using UnityEngine;
+using TMPro;
 using UnityEngine.UI;
 
 public class HUDController : MonoBehaviour
@@ -11,6 +12,9 @@ public class HUDController : MonoBehaviour
     public Text gearText;
     public Text secondaryText;
     public Text doubleJumpText;
+    public TMP_Text gearTextTMP;
+    public TMP_Text secondaryTextTMP;
+    public TMP_Text doubleJumpTextTMP;
 
     [Header("Power Up")]
     public Slider doubleJumpSlider;
@@ -40,9 +44,13 @@ public class HUDController : MonoBehaviour
         {
             if (gearText != null)
                 gearText.text = $"Engranajes: {playerInventory.GearCount}";
+            if (gearTextTMP != null)
+                gearTextTMP.text = $"Engranajes: {playerInventory.GearCount}";
 
             if (secondaryText != null)
                 secondaryText.text = $"Coleccionables: {playerInventory.SecondaryCount}";
+            if (secondaryTextTMP != null)
+                secondaryTextTMP.text = $"Coleccionables: {playerInventory.SecondaryCount}";
         }
 
         if (playerAbilities == null)
@@ -58,6 +66,16 @@ public class HUDController : MonoBehaviour
                 doubleJumpText.text = "Doble salto";
             else
                 doubleJumpText.text = string.Empty;
+        }
+
+        if (doubleJumpTextTMP != null)
+        {
+            if (hasTimedDoubleJump)
+                doubleJumpTextTMP.text = $"Doble salto: {Mathf.CeilToInt(playerAbilities.RemainingDoubleJumpTime)}s";
+            else if (playerAbilities.CanDoubleJump)
+                doubleJumpTextTMP.text = "Doble salto";
+            else
+                doubleJumpTextTMP.text = string.Empty;
         }
 
         if (doubleJumpSlider != null)

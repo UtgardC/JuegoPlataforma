@@ -8,6 +8,8 @@ public class PlayerController : MonoBehaviour
     public InputActionReference moveAction;
     public InputActionReference sprintAction;
     public InputActionReference jumpAction;
+    public InputActionReference pushAction;
+    public InputActionReference pullAction;
     public InputActionReference interactAction;
     public InputActionReference resetAction;
 
@@ -47,6 +49,20 @@ public class PlayerController : MonoBehaviour
             jumpAction.action.performed += OnJumpPerformed;
         }
 
+        if (pushAction != null)
+        {
+            pushAction.action.Enable();
+            pushAction.action.performed += OnPushPerformed;
+            pushAction.action.canceled += OnPushCanceled;
+        }
+
+        if (pullAction != null)
+        {
+            pullAction.action.Enable();
+            pullAction.action.performed += OnPullPerformed;
+            pullAction.action.canceled += OnPullCanceled;
+        }
+
         if (interactAction != null)
         {
             interactAction.action.Enable();
@@ -70,6 +86,20 @@ public class PlayerController : MonoBehaviour
         {
             jumpAction.action.performed -= OnJumpPerformed;
             jumpAction.action.Disable();
+        }
+
+        if (pushAction != null)
+        {
+            pushAction.action.performed -= OnPushPerformed;
+            pushAction.action.canceled -= OnPushCanceled;
+            pushAction.action.Disable();
+        }
+
+        if (pullAction != null)
+        {
+            pullAction.action.performed -= OnPullPerformed;
+            pullAction.action.canceled -= OnPullCanceled;
+            pullAction.action.Disable();
         }
 
         if (interactAction != null)
@@ -96,13 +126,28 @@ public class PlayerController : MonoBehaviour
         if (jumpAction == null && WasJumpPressed())
             motor.RequestJump();
 
-        if (interactAction == null)
+        if (pushAction == null)
+        {
+            if (WasPushPressed())
+                interaction.TryStartPush();
+        }
+
+        if (pullAction == null)
+        {
+            if (WasPullPressed())
+                interaction.TryStartPull();
+
+            if (WasPullReleased())
+                interaction.ReleasePull();
+        }
+
+        if (interactAction == null && pushAction == null && pullAction == null)
         {
             if (WasInteractPressed())
-                interaction.TryGrabOrRelease();
+                interaction.TryStartPull();
 
             if (WasInteractReleased())
-                interaction.ReleaseGrab();
+                interaction.ReleasePull();
         }
 
         if (resetAction == null && WasResetPressed())
@@ -251,6 +296,30 @@ public class PlayerController : MonoBehaviour
             || (Gamepad.current != null && Gamepad.current.buttonWest.wasReleasedThisFrame);
     }
 
+    private bool WasPushPressed()
+    {
+        return (Mouse.current != null && Mouse.current.leftButton.wasPressedThisFrame)
+            || (Gamepad.current != null && Gamepad.current.rightShoulder.wasPressedThisFrame);
+    }
+
+    private bool WasPushReleased()
+    {
+        return (Mouse.current != null && Mouse.current.leftButton.wasReleasedThisFrame)
+            || (Gamepad.current != null && Gamepad.current.rightShoulder.wasReleasedThisFrame);
+    }
+
+    private bool WasPullPressed()
+    {
+        return (Mouse.current != null && Mouse.current.rightButton.wasPressedThisFrame)
+            || (Gamepad.current != null && Gamepad.current.leftShoulder.wasPressedThisFrame);
+    }
+
+    private bool WasPullReleased()
+    {
+        return (Mouse.current != null && Mouse.current.rightButton.wasReleasedThisFrame)
+            || (Gamepad.current != null && Gamepad.current.leftShoulder.wasReleasedThisFrame);
+    }
+
     private bool WasResetPressed()
     {
         return (Keyboard.current != null && Keyboard.current.rKey.wasPressedThisFrame)
@@ -264,12 +333,38 @@ public class PlayerController : MonoBehaviour
 
     private void OnInteractPerformed(InputAction.CallbackContext context)
     {
-        interaction.TryGrabOrRelease();
+        if (IsActionPressed(context))
+            interaction.TryStartPull();
+        else
+            interaction.ReleasePull();
     }
 
     private void OnInteractCanceled(InputAction.CallbackContext context)
     {
-        interaction.ReleaseGrab();
+        interaction.ReleasePull();
+    }
+
+    private void OnPushPerformed(InputAction.CallbackContext context)
+    {
+        if (IsActionPressed(context))
+            interaction.TryStartPush();
+    }
+
+    private void OnPushCanceled(InputAction.CallbackContext context)
+    {
+    }
+
+    private void OnPullPerformed(InputAction.CallbackContext context)
+    {
+        if (IsActionPressed(context))
+            interaction.TryStartPull();
+        else
+            interaction.ReleasePull();
+    }
+
+    private void OnPullCanceled(InputAction.CallbackContext context)
+    {
+        interaction.ReleasePull();
     }
 
     private void OnResetPerformed(InputAction.CallbackContext context)
@@ -298,14 +393,33 @@ public class PlayerController : MonoBehaviour
     public void OnInteract(InputValue value)
     {
         if (value.isPressed)
-            interaction.TryGrabOrRelease();
+            interaction.TryStartPull();
         else
-            interaction.ReleaseGrab();
+            interaction.ReleasePull();
     }
 
     public void OnClimb(InputValue value)
     {
         OnInteract(value);
+    }
+
+    public void OnPush(InputValue value)
+    {
+        if (value.isPressed)
+            interaction.TryStartPush();
+    }
+
+    public void OnPull(InputValue value)
+    {
+        if (value.isPressed)
+            interaction.TryStartPull();
+        else
+            interaction.ReleasePull();
+    }
+
+    public void OnGrab(InputValue value)
+    {
+        OnPull(value);
     }
 
     public void OnResetCheckpoint(InputValue value)
@@ -329,5 +443,10 @@ public class PlayerController : MonoBehaviour
     {
         if (reference != null)
             reference.action.Disable();
+    }
+
+    private static bool IsActionPressed(InputAction.CallbackContext context)
+    {
+        return context.action != null && context.action.IsPressed();
     }
 }

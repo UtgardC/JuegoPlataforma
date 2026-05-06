@@ -126,8 +126,3 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LavaZone
   killsPlayer: 1
-  convertsValidBoxesToPlatforms: 1
-  platformSurfaceY: 0
-  useTransformYAsSurface: 1
-  keepBoxXZPosition: 1
-  platformOffset: {x: 0, y: 0, z: 0}
